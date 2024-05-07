@@ -8,9 +8,17 @@ Release description is automatically generated
 ## Inputs
 - `major-version` - **Required** - used in the major position for the tag and release title
 - `minor-version` - **Required** - used in the minor position for the tag and release title
-- `patch-version` - _Optional_ - used in the patch position for the tag and release title. If omitted, action will increment the patch version from the previous release.
+- `patch-version` - _Optional_ - used in the patch position for the tag and release title. If omitted, action will increment the patch version from the previous release. Generally recommend not setting this so as to not attempt writing a duplicate tag.
 
-Also **required**: when using this action, set the `GH_TOKEN` environment variable - this is required by `gh` CLI
+Also **required**:
+- the token used by your job should have `contents: write` permissions
+- if using the `actions/checkout` action, include:
+```yaml
+with:
+  fetch-tags: true
+  fetch-depth: 0
+```
+- when using this action, set the `GH_TOKEN` environment variable - this is required by `gh` CLI
 
 ## Outputs
 None

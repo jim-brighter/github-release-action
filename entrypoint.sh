@@ -2,7 +2,11 @@
 
 git config --system --add safe.directory /github/workspace
 
-last_release=$(git describe --abbrev=0 --tags | sed -e 's/v//')
+last_release=$(git describe --abbrev=0 --tags)
+if [[ $? -ne 0 ]]; then
+  echo "No previous release found, defaulting to 0.0.0"
+  last_release="0.0.0"
+fi
 
 new_major_version=$1
 new_minor_version=$2
