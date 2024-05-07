@@ -1,5 +1,7 @@
 #!/bin/sh -l
 
+git config --system --add safe.directory /github/workspace
+
 last_release=$(git describe --abbrev=0 --tags | sed -e 's/v//')
 
 new_major_version=$1
