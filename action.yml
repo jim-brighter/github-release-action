@@ -1,0 +1,19 @@
+name: 'Github Release'
+description: 'Create a Github release'
+inputs:
+  major-version:
+    description: 'Major version number for the release tag'
+    required: true
+    default: '0'
+  minor-version: 'Minor version number for the release tag'
+    required: true
+    default: '0'
+  patch-version: 'Patch version number for the release tag - if omitted, will use previous tag patch version + 1'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.major-version }}
+    - ${{ inputs.minor-version }}
+    - ${{ inputs.patch-version }}
