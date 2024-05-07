@@ -5,7 +5,8 @@ inputs:
     description: 'Major version number for the release tag'
     required: true
     default: '0'
-  minor-version: 'Minor version number for the release tag'
+  minor-version:
+    description: 'Minor version number for the release tag'
     required: true
     default: '0'
   patch-version: 'Patch version number for the release tag - if omitted, will use previous tag patch version + 1'
