@@ -25,11 +25,23 @@ None
 
 ## Example Usage
 ```yaml
-name: Create Release
-env:
-  GH_TOKEN: ${{ github.token }}
-uses: jim-brighter/github-release-action@v1
-with:
-  major-version: 1
-  minor-version: 0
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        uses: jim-brighter/github-release-action@v1
+        with:
+          major-version: 1
+          minor-version: 0
 ```
