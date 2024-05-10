@@ -23,7 +23,7 @@ new_release="v$new_major_version.$new_minor_version.$new_patch_version"
 echo "Last Release: $last_release"
 echo "New Release: $new_release"
 
-curl -L \
+curl -vL \
   -X POST \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
