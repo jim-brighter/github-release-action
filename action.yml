@@ -1,4 +1,4 @@
-name: 'Github Release'
+name: 'Simple Github Release'
 description: 'Create a Github release'
 inputs:
   major-version:
