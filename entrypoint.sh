@@ -26,7 +26,7 @@ echo "New Release: $new_release"
 curl -vL \
   -X POST \
   -H "Accept: application/vnd.github+json" \
-  -H "Content-Type: application/vnd.github+json" \
+  -H "Content-Type: application/json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" \
