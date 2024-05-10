@@ -12,6 +12,7 @@ Release description is automatically generated
 
 Also **required**:
 - the token used by your job should have `contents: write` permissions
+- pass the `GITHUB_TOKEN` environment variable to the action
 - if using the `actions/checkout` action, include:
 ```yaml
 with:
