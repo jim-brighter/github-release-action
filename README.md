@@ -38,7 +38,7 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
       - name: Create Release
-        uses: jim-brighter/github-release-action@v1
+        uses: jim-brighter/github-release-action@v2
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
