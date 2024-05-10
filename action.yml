@@ -1,5 +1,8 @@
 name: 'Simple Github Release'
 description: 'Create a Github release'
+branding:
+  icon: upload
+  color: green
 inputs:
   major-version:
     description: 'Major version number for the release tag'
