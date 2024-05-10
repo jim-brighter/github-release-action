@@ -1,4 +1,4 @@
-# github-release-action
+# Simple Github Release
 Creates a new, barebones Release and Tag, and pushes them to Github
 
 Tag and Release Title follow `v[major].[minor].[patch]` format, e.g. `v1.0.3`
