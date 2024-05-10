@@ -18,7 +18,6 @@ with:
   fetch-tags: true
   fetch-depth: 0
 ```
-- when using this action, set the `GH_TOKEN` environment variable - this is required by `gh` CLI
 
 ## Outputs
 None
@@ -38,8 +37,6 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
       - name: Create Release
-        env:
-          GH_TOKEN: ${{ github.token }}
         uses: jim-brighter/github-release-action@v1
         with:
           major-version: 1
