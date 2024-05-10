@@ -38,6 +38,8 @@ jobs:
           fetch-depth: 0
       - name: Create Release
         uses: jim-brighter/github-release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           major-version: 1
           minor-version: 0
