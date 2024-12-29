@@ -9,6 +9,7 @@ Release description is automatically generated
 - `major-version` - **Required** - used in the major position for the tag and release title
 - `minor-version` - **Required** - used in the minor position for the tag and release title
 - `patch-version` - _Optional_ - used in the patch position for the tag and release title. If omitted, action will increment the patch version from the previous release. Generally recommend not setting this so as to not attempt writing a duplicate tag.
+- `num_releases_to_keep` - _Optional_ - used to optionally prune old releases. If this is a number greater than 0, the action will delete all but the `num_releases_to_keep` most recent releases & tags
 
 Also **required**:
 - the token used by your job should have `contents: write` permissions
@@ -38,10 +39,11 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
       - name: Create Release
-        uses: jim-brighter/github-release-action@v2
+        uses: jim-brighter/github-release-action@v3
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           major-version: 1
           minor-version: 0
+          num_releases_to_keep: 20
 ```
