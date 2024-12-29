@@ -6,10 +6,12 @@ Tag and Release Title follow `v[major].[minor].[patch]` format, e.g. `v1.0.3`
 Release description is automatically generated
 
 ## Inputs
-- `major-version` - **Required** - used in the major position for the tag and release title
-- `minor-version` - **Required** - used in the minor position for the tag and release title
-- `patch-version` - _Optional_ - used in the patch position for the tag and release title. If omitted, action will increment the patch version from the previous release. Generally recommend not setting this so as to not attempt writing a duplicate tag.
-- `num_releases_to_keep` - _Optional_ - used to optionally prune old releases. If this is a number greater than 0, the action will delete all but the `num_releases_to_keep` most recent releases & tags
+|Input Field|Required|Default|Description|
+|-|-|-|-|
+|`major-version`|**Required**|`0`|Used in the major position for the tag and release title|
+|`minor-version`|**Required**|`0`|Used in the minor position for the tag and release title|
+|`patch-version`|Optional|Will increment the previous release patch version. If there is no previous release, will default to `1`|Used in the patch position for the tag and release title. Generally recommend not setting this so as to not attempt writing a duplicate tag.|
+|`num_releases_to_keep`|Optional|None - will not prune any releases|Used to optionally prune old releases. If this is a number greater than 0, the action will delete all but the `num_releases_to_keep` most recent releases & tags|
 
 Also **required**:
 - the token used by your job should have `contents: write` permissions
