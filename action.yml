@@ -15,10 +15,14 @@ inputs:
   patch-version:
     description: 'Patch version number for the release tag - if omitted, will use previous tag patch version + 1'
     required: false
+  num_releases_to_keep:
+    description: 'Number of Github releases to keep - will prune the oldest releases up to the number specified. By default will keep all releases'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.major-version }}
-    - ${{ inputs.minor-version }}
-    - ${{ inputs.patch-version }}
+  env:
+    MAJOR_VERSION: ${{ inputs.major-version }}
+    MINOR_VERSION: ${{ inputs.minor-version }}
+    PATCH_VERSION: ${{ inputs.patch-version }}
+    NUM_RELEASES_TO_KEEP: ${{ num_releases_to_keep }}
