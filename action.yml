@@ -25,4 +25,4 @@ runs:
     MAJOR_VERSION: ${{ inputs.major-version }}
     MINOR_VERSION: ${{ inputs.minor-version }}
     PATCH_VERSION: ${{ inputs.patch-version }}
-    NUM_RELEASES_TO_KEEP: ${{ num_releases_to_keep }}
+    NUM_RELEASES_TO_KEEP: ${{ inputs.num_releases_to_keep }}
