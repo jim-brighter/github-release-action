@@ -38,45 +38,38 @@ curl -L \
   }'
 
 # Optionally prune old releases
+if [[ "$NUM_RELEASES_TO_KEEP" =~ '^[0-9]+$' ]]; then
+  num_releases_to_keep="+$(expr $NUM_RELEASES_TO_KEEP + 1)"
 
-if [[ -z "$NUM_RELEASES_TO_KEEP" ]]; then
+  sleep 3
+
+  echo "Pruning all but the $NUM_RELEASES_TO_KEEP most recent releases"
+
+  git fetch -pP
+  curl -L \
+    -H "Accept: application/vnd.github+json" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" | jq ".[].id" | tail -n "$num_releases_to_keep" | xargs -I{} \
+  curl -L \
+    -X "DELETE" \
+    -w "DELETE Status: %{http_code}\n" \
+    -H "Accept: application/vnd.github+json" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}"
+  git for-each-ref --sort=-creatordate --format '%(refname) %(creatordate)' refs/tags | tail -n "$num_releases_to_keep" | awk '{print $1}' | xargs git push --delete origin
+else
   echo "Not pruning any releases"
-  exit 0
-elif ! [[ "$NUM_RELEASES_TO_KEEP" =~ '^[0-9]+$' ]]; then
-  echo "num_releases_to_keep should be a number"
-  exit 1
 fi
-
-num_releases_to_keep="+$(expr $NUM_RELEASES_TO_KEEP + 1)"
-
-sleep 3
-
-echo "Pruning all but the $NUM_RELEASES_TO_KEEP most recent releases"
-
-git fetch -pP
-curl -L \
-  -H "Accept: application/vnd.github+json" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" | jq ".[].id" | tail -n "$num_releases_to_keep" | xargs -I{} \
-curl -L \
-  -X "DELETE" \
-  -w "DELETE Status: %{http_code}\n" \
-  -H "Accept: application/vnd.github+json" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $GITHUB_TOKEN" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}"
-git for-each-ref --sort=-creatordate --format '%(refname) %(creatordate)' refs/tags | tail -n "$num_releases_to_keep" | awk '{print $1}' | xargs git push --delete origin
 
 # Optionally tag major version
-
-if [[ "$TAG_MAJOR_VERSION" != "true" ]]; then
+if [[ "$TAG_MAJOR_VERSION" = "true" ]]; then
+  git fetch -pP
+  git tag -f "v$major_version" "v$new_release"
+  git push -f --tags
+else
   echo "Not tagging major version"
-  exit 0
 fi
-
-git fetch -pP
-git tag -f "v$major_version" "v$new_release"
-git push -f --tags
