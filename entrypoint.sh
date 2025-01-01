@@ -68,7 +68,7 @@ fi
 # Optionally tag major version
 if [[ "$TAG_MAJOR_VERSION" = "true" ]]; then
   git fetch -pP
-  git tag -f "v$major_version" "v$new_release"
+  git tag -f "v$major_version" "$new_release"
   git push -f --tags
 else
   echo "Not tagging major version"
