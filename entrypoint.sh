@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-set -ex
+set -e
 
 # Create new release
 
@@ -49,6 +49,8 @@ fi
 
 num_releases_to_keep="+$(expr $NUM_RELEASES_TO_KEEP + 1)"
 
+sleep 3
+
 echo "Pruning all but the $NUM_RELEASES_TO_KEEP most recent releases"
 
 git fetch -pP
@@ -58,8 +60,9 @@ curl -L \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" | jq ".[].id" | tail -n "$num_releases_to_keep" | xargs -I{} \
-curl -Lv \
+curl -L \
   -X "DELETE" \
+  -w "\n%{http_code}\n" \
   -H "Accept: application/vnd.github+json" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
