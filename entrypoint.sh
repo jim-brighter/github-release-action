@@ -56,7 +56,7 @@ curl -L \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" | jq ".[].id" | tail -n "$num_releases_to_keep" | xargs -I{} \
-curl -L \
+curl -Lv \
   -X "DELETE" \
   -H "Accept: application/vnd.github+json" \
   -H "Content-Type: application/json" \
