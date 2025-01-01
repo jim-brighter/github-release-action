@@ -69,3 +69,14 @@ curl -L \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}"
 git for-each-ref --sort=-creatordate --format '%(refname) %(creatordate)' refs/tags | tail -n "$num_releases_to_keep" | awk '{print $1}' | xargs git push --delete origin
+
+# Optionally tag major version
+
+if [[ "$TAG_MAJOR_VERSION" != "true" ]]; then
+  echo "Not tagging major version"
+  exit 0
+fi
+
+git fetch -pP
+git tag -f "v$major_version" "v$new_release"
+git push -f --tags

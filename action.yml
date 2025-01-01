@@ -18,6 +18,9 @@ inputs:
   num_releases_to_keep:
     description: 'Number of Github releases to keep - will prune the oldest releases up to the number specified. By default will keep all releases'
     required: false
+  tag_major_version:
+    description: 'If true, will update the major version tag (e.g. v2) to point to the newest published release (e.g. v2.1.4)'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -26,3 +29,4 @@ runs:
     MINOR_VERSION: ${{ inputs.minor-version }}
     PATCH_VERSION: ${{ inputs.patch-version }}
     NUM_RELEASES_TO_KEEP: ${{ inputs.num_releases_to_keep }}
+    TAG_MAJOR_VERSION: ${{ inputs.tag_major_version }}
