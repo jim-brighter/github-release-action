@@ -1,0 +1,28 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+      - name: Create Release
+        uses: jim-brighter/github-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          major-version: 4
+          minor-version: 0
+          tag_major_version: true
