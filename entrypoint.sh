@@ -1,5 +1,7 @@
 #!/bin/sh -l
 
+set -ex
+
 # Create new release
 
 git config --system --add safe.directory /github/workspace
