@@ -52,7 +52,7 @@ if [[ "$NUM_RELEASES_TO_KEEP" =~ '^[0-9]+$' ]]; then
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" \
-    | jq -r '.[] | ((.id | tostring) + "|" + .tag_name)' | tail -n "$num_releases_to_keep")
+    | jq -r '.[] | ((.id | tostring) + "|" + .tag_name)' | tail -n "$num_releases_to_keep" | tr '\n' ' ')
 
   for r in ${releases[@]}; do
     release_id=$(echo $r | cut -d '|' -f 1)
