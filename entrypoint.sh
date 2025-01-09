@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-set -e
+set -ex
 
 # Create new release
 
