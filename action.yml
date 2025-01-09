@@ -22,11 +22,5 @@ inputs:
     description: 'If true, will update the major version tag (e.g. v2) to point to the newest published release (e.g. v2.1.4)'
     required: false
 runs:
-  using: 'node22'
+  using: 'node20'
   main: 'index.js'
-  env:
-    MAJOR_VERSION: ${{ inputs.major-version }}
-    MINOR_VERSION: ${{ inputs.minor-version }}
-    PATCH_VERSION: ${{ inputs.patch-version }}
-    NUM_RELEASES_TO_KEEP: ${{ inputs.num_releases_to_keep }}
-    TAG_MAJOR_VERSION: ${{ inputs.tag_major_version }}
