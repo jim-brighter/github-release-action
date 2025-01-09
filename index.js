@@ -6,12 +6,12 @@ const owner = process.env.GITHUB_REPOSITORY_OWNER
 const repo = process.env.GITHUB_REPOSITORY.split('/')[1]
 
 const token = process.env.GITHUB_TOKEN
-const majorVersion = process.env.MAJOR_VERSION
-const minorVersion = process.env.MINOR_VERSION
-let patchVersion = process.env.PATCH_VERSION
+const majorVersion = core.getInput('major-version')
+const minorVersion = core.getInput('minor-version')
+let patchVersion = core.getInput('patch-version')
 
-const numReleasesToKeep = process.env.NUM_RELEASES_TO_KEEP
-const shouldTagMajorVersion = process.env.TAG_MAJOR_VERSION
+const numReleasesToKeep = core.getInput('num_releases_to_keep')
+const shouldTagMajorVersion = core.getInput('tag_major_version')
 
 const octokit = github.getOctokit(token)
 
@@ -43,7 +43,7 @@ async function getNextReleaseVersion() {
 
   const latestTag = sortedTags[0] || 'v0.0.0'
 
-  if (patchVersion == null) {
+  if (!patchVersion) {
     patchVersion = Number(latestTag.ref.split('.').pop()) + 1
   }
 
@@ -119,7 +119,7 @@ async function tagMajorVersion(nextRelease) {
 }
 
 function needToWait() {
-  return numReleasesToKeep != null || shouldTagMajorVersion != null
+  return !!numReleasesToKeep || !!shouldTagMajorVersion
 }
 
 run()
