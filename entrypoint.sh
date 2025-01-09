@@ -46,21 +46,32 @@ if [[ "$NUM_RELEASES_TO_KEEP" =~ '^[0-9]+$' ]]; then
   echo "Pruning all but the $NUM_RELEASES_TO_KEEP most recent releases"
 
   git fetch -pP
-  curl -L \
+  releases=$(curl -L \
     -H "Accept: application/vnd.github+json" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" | jq ".[].id" | tail -n "$num_releases_to_keep" | xargs -I{} \
-  curl -L \
-    -X "DELETE" \
-    -w "DELETE Status: %{http_code}\n" \
-    -H "Accept: application/vnd.github+json" \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $GITHUB_TOKEN" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/{}"
-  git for-each-ref --sort=-creatordate --format '%(refname) %(creatordate)' refs/tags | tail -n "$num_releases_to_keep" | awk '{print $1}' | xargs git push --delete origin
+    "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" \
+    | jq -r '.[] | ((.id | tostring) + "|" + .tag_name)' | tail -n "$num_releases_to_keep")
+
+  for r in ${releases[@]}; do
+    release_id=$(echo $r | cut -d '|' -f 1)
+    tag=$(echo $r | cut -d '|' -f 2)
+
+    echo "Deleting $tag"
+
+    curl -L \
+      -X "DELETE" \
+      -w "DELETE Status: %{http_code}\n" \
+      -H "Accept: application/vnd.github+json" \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $GITHUB_TOKEN" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/$release_id"
+
+    git push --delete origin $tag
+  done
+  # git for-each-ref --sort=-creatordate --format '%(refname) %(creatordate)' refs/tags | tail -n "$num_releases_to_keep" | awk '{print $1}' | xargs git push --delete origin
 else
   echo "Not pruning any releases"
 fi
