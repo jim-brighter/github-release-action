@@ -21,6 +21,8 @@ fi
 
 new_release="v$major_version.$minor_version.$patch_version"
 
+commit_sha=$(git rev-parse HEAD)
+
 echo "Last Release: $last_release"
 echo "New Release: $new_release"
 
@@ -33,6 +35,7 @@ curl -L \
   "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" \
   -d '{
     "tag_name": "'"$new_release"'",
+    "target_commitish": "'"$commit_sha"'",
     "name": "'"$new_release"'",
     "generate_release_notes": true
   }'
