@@ -14,15 +14,8 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-tags: true
-          fetch-depth: 0
+        uses: actions/checkout@v6
       - name: Create Release
-        uses: jim-brighter/github-release-action@v4
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: jim-brighter/github-release-action@v5
         with:
-          major-version: 5
-          minor-version: 0
           tag_major_version: true
