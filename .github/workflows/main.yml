@@ -23,6 +23,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          major-version: 4
-          minor-version: 1
+          major-version: 5
+          minor-version: 0
           tag_major_version: true

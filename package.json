@@ -1,0 +1,25 @@
+{
+  "name": "github-release-action",
+  "version": "1.0.0",
+  "description": "Creates a new, barebones Release and Tag, and pushes them to Github",
+  "homepage": "https://github.com/jim-brighter/github-release-action#readme",
+  "bugs": {
+    "url": "https://github.com/jim-brighter/github-release-action/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jim-brighter/github-release-action.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "action.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1",
+    "@octokit/webhooks-types": "^7.6.1"
+  }
+}
