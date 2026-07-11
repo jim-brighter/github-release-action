@@ -14,6 +14,7 @@ inputs:
   tag_major_version:
     description: 'If true, will update the major version tag (e.g. v2) to point to the newest published release (e.g. v2.1.4)'
     required: false
+    default: false
 runs:
   using: node24
   main: dist/index.cjs
