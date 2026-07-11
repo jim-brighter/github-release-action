@@ -68,7 +68,7 @@ function calculateNextVersion(currentVersion, commitMessage) {
  */
 async function createGitHubRelease(octokit, owner, repo, tag, sha) {
     console.log(`Creating release ${tag} for commit ${sha}...`);
-    await octokit.rest.repos.createRelease({
+    const response = await octokit.rest.repos.createRelease({
         owner,
         repo,
         tag_name: tag,
@@ -76,6 +76,7 @@ async function createGitHubRelease(octokit, owner, repo, tag, sha) {
         name: tag,
         generate_release_notes: true
     });
+    return response.data;
 }
 
 /**
@@ -115,13 +116,21 @@ async function updateMajorVersionTag(octokit, owner, repo, major, sha) {
 /**
  * Prunes older releases and tags, keeping only the specified number.
  */
-async function pruneOldReleases(octokit, owner, repo, numToKeep) {
+async function pruneOldReleases(octokit, owner, repo, numToKeep, newRelease) {
     console.log(`Pruning all but the ${numToKeep} most recent releases...`);
     const releases = await octokit.paginate(octokit.rest.repos.listReleases, {
         owner,
         repo,
         per_page: 100
     });
+
+    if (newRelease) {
+        const hasNewRelease = releases.some(r => r.id === newRelease.id || r.tag_name === newRelease.tag_name);
+        if (!hasNewRelease) {
+            console.log(`Newly created release ${newRelease.tag_name} (ID: ${newRelease.id}) was not returned by listReleases (likely due to API replication lag). Manually adding it to the list for pruning calculations.`);
+            releases.push(newRelease);
+        }
+    }
 
     // Sort releases by created_at descending (newest first)
     releases.sort((a, b) => {
@@ -190,14 +199,14 @@ async function run() {
         console.log(`New Release Tag: ${newReleaseTag}`);
 
         // 3. Create the new release
-        await createGitHubRelease(octokit, owner, repo, newReleaseTag, commitSha);
+        const newRelease = await createGitHubRelease(octokit, owner, repo, newReleaseTag, commitSha);
 
         // 4. Optionally prune old releases
         if (!isNaN(numReleasesToKeep) && numReleasesToKeep > 0) {
             // Wait 3 seconds to ensure the GitHub API registers the new release
             console.log('Waiting 3 seconds before pruning...');
             await new Promise((resolve) => setTimeout(resolve, 3000));
-            await pruneOldReleases(octokit, owner, repo, numReleasesToKeep);
+            await pruneOldReleases(octokit, owner, repo, numReleasesToKeep, newRelease);
         } else {
             console.log('Not pruning any releases');
         }
