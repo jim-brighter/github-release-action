@@ -213,4 +213,4 @@ async function run() {
     }
 }
 
-await run();
+run();
