@@ -1,6 +1,6 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-const { execSync } = require('child_process');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import { execSync } from 'child_process';
 
 /**
  * Gets the latest release tag from the GitHub repository using Octokit.
@@ -213,4 +213,4 @@ async function run() {
     }
 }
 
-run();
+await run();
