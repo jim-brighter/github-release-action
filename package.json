@@ -12,14 +12,18 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "action.js",
   "scripts": {
+    "build": "esbuild action.js --bundle --minify --platform=node --format=esm --target=node24 --outfile=dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@actions/github": "^9.1.1",
     "@octokit/webhooks-types": "^7.6.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
   }
 }
