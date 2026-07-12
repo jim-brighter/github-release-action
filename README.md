@@ -1,5 +1,5 @@
 # Simple Github Release
-Creates a new, barebones Release and Tag, and pushes them to Github.
+Creates a new barebones Release and Tag, and pushes them to Github.
 
 Versioning is dynamically computed based on the commit message of the push event:
 - If the commit message includes `version:major`, the major version is incremented, and minor and patch are reset to `0`.
@@ -32,14 +32,9 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-tags: true
-          fetch-depth: 0
+        uses: actions/checkout@v6
       - name: Create Release
-        uses: jim-brighter/github-release-action@v4
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: jim-brighter/github-release-action@v5
         with:
           num_releases_to_keep: 20
           tag_major_version: true
